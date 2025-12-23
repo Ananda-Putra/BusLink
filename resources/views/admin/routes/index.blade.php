@@ -31,29 +31,31 @@
 
         <form action="{{ route('admin.routes.store') }}" method="POST">
             @csrf
-            <div class="flex flex-col md:flex-row gap-4 items-center">
-                
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
                 <div class="relative w-full">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                     </div>
-                    <input type="text" name="origin" class="pl-10 w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3" placeholder="Kota Asal (Misal: Jakarta)" required>
-                </div>
-
-                <div class="hidden md:block text-gray-400">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                    <input type="text" name="origin" class="pl-10 w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3" placeholder="Kota Asal" required>
                 </div>
 
                 <div class="relative w-full">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                     </div>
-                    <input type="text" name="destination" class="pl-10 w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3" placeholder="Kota Tujuan (Misal: Bandung)" required>
+                    <input type="text" name="destination" class="pl-10 w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3" placeholder="Kota Tujuan" required>
                 </div>
 
-                <button type="submit" class="w-full md:w-auto text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-8 py-3 text-center inline-flex items-center justify-center gap-2 transition-all shadow-md hover:shadow-lg">
+                <div class="relative w-full">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <input type="number" name="duration" class="pl-10 w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3" placeholder="Durasi (Jam)" min="1" value="10" required>
+                </div>
+
+                <button type="submit" class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-3 text-center inline-flex items-center justify-center gap-2 transition-all shadow-md hover:shadow-lg">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                    Simpan Rute
+                    Simpan
                 </button>
             </div>
         </form>
@@ -70,9 +72,10 @@
                 <thead class="bg-blue-50 text-blue-800 uppercase text-xs font-bold">
                     <tr>
                         <th class="py-4 px-6 text-center w-16">No</th>
-                        <th class="py-4 px-6 text-right w-1/3">Dari (Asal)</th>
+                        <th class="py-4 px-6 text-right w-1/4">Dari (Asal)</th>
                         <th class="py-4 px-6 text-center w-10"></th> 
-                        <th class="py-4 px-6 text-left w-1/3">Ke (Tujuan)</th>
+                        <th class="py-4 px-6 text-left w-1/4">Ke (Tujuan)</th>
+                        <th class="py-4 px-6 text-center text-orange-600">Durasi</th>
                         <th class="py-4 px-6 text-center">Aksi</th>
                     </tr>
                 </thead>
@@ -86,11 +89,14 @@
                         </td>
 
                         <td class="py-4 px-2 text-center text-blue-400">
-                            <svg class="w-5 h-5 inline-block animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
+                            <svg class="w-5 h-5 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
                         </td>
 
                         <td class="py-4 px-6 text-left font-bold text-gray-800 text-base">
                             {{ $route->destination }}
+                        </td>
+                        <td class="py-4 px-6 text-center font-bold text-orange-600 bg-orange-50 rounded-lg">
+                            {{ $route->duration ?? 10 }} Jam
                         </td>
 
                         <td class="py-4 px-6 text-center">
@@ -105,7 +111,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="5" class="py-8 text-center">
+                        <td colspan="6" class="py-8 text-center">
                             <div class="flex flex-col items-center justify-center text-gray-400">
                                 <svg class="w-12 h-12 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0121 18.382V7.618a1 1 0 01-.553-.894L15 7m0 13V7"></path></svg>
                                 <p class="text-base">Belum ada rute perjalanan.</p>

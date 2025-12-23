@@ -10,7 +10,6 @@ class BusController extends Controller
     public function index()
     {
         $buses = Bus::all();
-        
         return view('admin.buses.index', compact('buses'));
     }
 
@@ -22,7 +21,7 @@ class BusController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'bus_name' => 'required', 
+            'bus_name' => 'required|string|max:255', 
             'total_seats' => 'required|numeric',
         ]);
 
@@ -30,6 +29,17 @@ class BusController extends Controller
             'bus_name' => $request->bus_name, 
             'total_seats' => $request->total_seats,
         ]);
-        return redirect()->route('admin.buses.index')->with('success', 'Data bus berhasil disimpan!');
+
+        return redirect()->route('admin.buses.index')
+                         ->with('success', 'Data bus berhasil disimpan!');
     }
+
+    public function destroy($id)
+    {
+        $bus = Bus::findOrFail($id);
+        $bus->delete();
+
+        return redirect()->route('admin.buses.index')
+                         ->with('success', 'Bus berhasil dihapus!');
     }
+} 

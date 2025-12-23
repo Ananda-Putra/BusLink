@@ -3,48 +3,56 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Services\BookingService;
-use Exception;
+use App\Models\Booking;
+use App\Models\Schedule;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class BookingController extends Controller
 {
-    protected $bookingService;
-
-    public function __construct(BookingService $bookingService)
+    public function index()
     {
-        $this->bookingService = $bookingService;
+        $bookings = Booking::where('user_id', Auth::id())
+                    ->with(['schedule.bus', 'schedule.route'])
+                    ->latest()
+                    ->get();
+        return view('bookings.history', compact('bookings')); 
     }
 
-    /**
-     * POST /booking
-     * Body: { "user_id": 1, "schedule_id": 1, "seat_id": 1 }
-     */
     public function store(Request $request)
     {
         $request->validate([
-            'user_id' => 'required|integer',
             'schedule_id' => 'required|exists:schedules,id',
-            'seat_id' => 'required|exists:seats,id',
         ]);
 
-        try {
-            // Panggil service layer untuk booking
-            $booking = $this->bookingService->bookSeat(
-                $request->user_id,
-                $request->schedule_id,
-                $request->seat_id
-            );
+        $schedule = Schedule::findOrFail($request->schedule_id);
+        $seats = $request->input('seats', 1); 
+        $booking = Booking::create([
+            'user_id'      => Auth::id(), 
+            'schedule_id'  => $schedule->id,
+            'booking_code' => 'TRX-' . strtoupper(Str::random(6)),
+            'total_price'  => $schedule->price * $seats, 
+            'seats'        => $seats, 
+            'status'       => 'pending',
+        ]);
 
-            return response()->json([
-                'success' => true,
-                'booking' => $booking
-            ], 201);
+        return redirect()->route('bookings.show', $booking->id);
+    }
 
-        } catch (Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 409);
-        }
+    public function show($id)
+    {
+        $booking = Booking::with(['schedule.bus', 'schedule.route'])
+                    ->where('user_id', Auth::id())
+                    ->findOrFail($id);
+        
+        return view('bookings.show', compact('booking'));
+    }
+
+    public function payNow($id)
+    {
+        $booking = Booking::where('user_id', Auth::id())->findOrFail($id);
+        $booking->update(['status' => 'paid']);
+        return redirect()->route('bookings.show', $booking->id)
+                         ->with('success', 'Pembayaran Berhasil! Tiket Terbit.');
     }
 }

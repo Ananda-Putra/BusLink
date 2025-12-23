@@ -18,30 +18,36 @@
                     </a>
                 </div>
 
-                <div class="flex items-center space-x-4">
-                    @auth
-                        <span class="text-gray-700 hidden sm:block">Halo, <strong>{{ Auth::user()->name }}</strong></span>
+                <div class="flex items-center space-x-6"> @auth
+                        <span class="text-gray-700 hidden sm:block text-sm">
+                            Halo, <strong>{{ Auth::user()->name }}</strong>
+                        </span>
+
+                        <a href="{{ route('bookings.index') }}" class="text-gray-600 hover:text-blue-600 font-bold text-sm flex items-center gap-1 transition">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Riwayat
+                        </a>
                         @if(Auth::user()->role === 'admin')
                              <a href="{{ route('admin.admin') }}" class="text-blue-600 hover:text-blue-800 font-bold text-sm">Dashboard</a>
                         @endif
                         
                         <form action="{{ route('logout') }}" method="POST" class="inline">
                             @csrf
-                            <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm transition">
+                            <button type="submit" class="bg-red-50 text-red-600 hover:bg-red-100 px-4 py-2 rounded-lg text-sm font-medium transition">
                                 Logout
                             </button>
                         </form>
                     @else
                         <a href="{{ route('login') }}" class="text-gray-700 hover:text-blue-600 font-medium">Masuk</a>
-                        <a href="{{ route('register') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition">Daftar</a>
+                        <a href="{{ route('register') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition shadow-md">Daftar</a>
                     @endauth
                 </div>
             </div>
         </div>
     </nav>
 
-    <div class="relative bg-blue-600 h-[500px] flex items-center justify-center pt-16">
-        <div class="absolute inset-0 bg-gradient-to-br from-blue-700 to-blue-500 opacity-90"></div>
+    <div class="relative bg-blue-600 h-125 flex items-center justify-center pt-16">
+        <div class="absolute inset-0 bg-linear-to-br from-blue-700 to-blue-500 opacity-90"></div>
 
         <div class="relative z-10 w-full max-w-4xl px-4">
             <h1 class="text-4xl md:text-5xl font-bold text-white text-center mb-8 drop-shadow-md">
@@ -87,7 +93,7 @@
         </div>
     </div>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16 relative z-10 mb-12 flex-grow">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16 relative z-10 mb-12 grow">
         
         @if($schedules->isEmpty())
             <div class="bg-white rounded-lg shadow-lg p-10 text-center border-t-4 border-orange-500">
@@ -111,7 +117,7 @@
                         </span>
                     </div>
 
-                    <div class="p-5 flex-grow">
+                    <div class="p-5 grow">
                         <div class="flex justify-between items-start mb-4">
                             <div>
                                 <h4 class="font-bold text-gray-800 text-lg">{{ $item->bus->bus_name }}</h4>

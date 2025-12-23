@@ -7,7 +7,7 @@ use Illuminate\Database\Schema\Blueprint;
 
 class Route extends Model
 {
-    protected $fillable = ['origin', 'destination'];
+    protected $fillable = ['origin', 'duration', 'destination'];
 
     public function schedules()
     {

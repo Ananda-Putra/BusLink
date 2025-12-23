@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('schedule_id')->constrained()->cascadeOnDelete();
+            $table->string('booking_code')->unique();
             $table->decimal('total_price', 10, 2);
             $table->enum('status', ['pending', 'paid', 'canceled'])->default('pending');
             $table->timestamps();
